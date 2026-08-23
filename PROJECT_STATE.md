@@ -86,49 +86,47 @@ src/
 ├── assets/
 │
 ├── components/
-│   ├── layout/
-│   │   ├── Navbar.jsx
-│   │   └── Footer.jsx
+│   ├── layout/              ✅ created
+│   │   ├── Footer.css
+│   │   ├── Footer.jsx
+│   │   ├── Navbar.css
+│   │   └── Navbar.jsx
 │   │
-│   ├── events/
-│   │   ├── EventCard.jsx
-│   │   ├── EventList.jsx
-│   │   └── EventFilters.jsx
-│   │
-│   ├── registration/
-│   │   ├── RegistrationForm.jsx
-│   │   └── RegistrationSuccess.jsx
-│   │
-│   └── ui/
+│   └── ui/                  ✅ created
+│       ├── Button.css
 │       ├── Button.jsx
-│       ├── Modal.jsx
-│       ├── Loader.jsx
-│       └── EmptyState.jsx
+│       ├── EmptyState.css
+│       ├── EmptyState.jsx
+│       ├── EventCard.css
+│       ├── EventCard.jsx
+│       ├── Loader.css
+│       └── Loader.jsx
 │
-├── pages/
-│   ├── Home.jsx
-│   ├── Events.jsx
+├── pages/                   ✅ created (stubs)
+│   ├── CreateEvents.jsx
 │   ├── EventDetails.jsx
-│   ├── CreateEvent.jsx
-│   ├── MyEvents.jsx
-│   └── Registration.jsx
+│   ├── Events.jsx
+│   ├── Home.jsx
+│   └── MyEvents.jsx
 │
-├── services/
-│   └── eventService.js
-│
-├── context/
+├── context/                 ✅ created
 │   └── EventContext.jsx
 │
-├── data/
-│   └── fallbackEvents.js
+├── services/                ✅ created
+│   └── eventService.js
 │
-├── styles/
-│   ├── globals.css
-│   └── ...
+├── data/                    ✅ created
+│   └── fallbackEvents.js    (moved from root Data/events.js)
 │
+├── App.css
 ├── App.jsx
+├── globals.css              ✅ created (CSS tokens + reset)
 └── main.jsx
 ```
+
+> **Note:** `globals.css` lives at the `src/` root (not in a `styles/`
+> subfolder). The old `Data/events.js` at the project root is now
+> superseded by `src/data/fallbackEvents.js` and can be deleted.
 
 This is a target architecture, not a requirement to create every file
 immediately.
@@ -174,19 +172,40 @@ The original project remains available as a fallback.
 -   [x] Created the feature branch `redesign/event-platform`.
 -   [x] Confirmed the existing project runs successfully with
     `npm run dev`.
+-   [x] Established the full `src/` folder structure.
+-   [x] Created `components/layout/` — `Navbar.jsx/.css`,
+    `Footer.jsx/.css`.
+-   [x] Created `components/ui/` — `Button`, `EmptyState`, `EventCard`,
+    `Loader` (each `.jsx` + `.css`).
+-   [x] Created `pages/` stubs — `Home`, `Events`, `EventDetails`,
+    `CreateEvents`, `MyEvents`.
+-   [x] Created `context/EventContext.jsx` with `EventProvider` and
+    `useEvents` hook.
+-   [x] Created `services/eventService.js` with CRUD stubs.
+-   [x] Created `data/fallbackEvents.js` (migrated from root
+    `Data/events.js`).
+-   [x] Created `globals.css` with CSS custom properties and base reset.
+-   [x] Updated `main.jsx` to import `globals.css`.
+
+### In Progress
+
+-   [ ] Fill in `Navbar.jsx` with real navigation links and routing.
+-   [ ] Fill in `Footer.jsx` with real content.
+-   [ ] Implement `EventContext` state management fully.
+-   [ ] Wire `eventService.js` functions to `EventContext`.
 
 ### Not Yet Started
 
--   [ ] Refactor `App.jsx`
+-   [ ] Refactor `App.jsx` (add routing, wrap with `EventProvider`)
 -   [ ] Review and clean current routing
--   [ ] Establish the new page/layout structure
--   [ ] Establish the shared design system
--   [ ] Extract reusable UI components
--   [ ] Separate event data/API logic from UI
+-   [ ] Style all UI components (`Button`, `EventCard`, `Loader`, etc.)
+-   [ ] Build out `Events.jsx` — list all events using `EventCard`
+-   [ ] Build out `EventDetails.jsx` — show full event info
+-   [ ] Build out `CreateEvents.jsx` — event creation form
+-   [ ] Build out `MyEvents.jsx` — user's registered/created events
+-   [ ] Build out `Home.jsx` — hero + featured events
 -   [ ] Integrate the registration form
 -   [ ] Improve event browsing and filtering
--   [ ] Improve Event Details
--   [ ] Improve My Events
 -   [ ] Polish responsive behavior
 -   [ ] Final visual consistency pass
 -   [ ] Production build
@@ -198,19 +217,17 @@ The original project remains available as a fallback.
 
 ## Current Phase
 
-### Phase 1 --- Foundation & Architecture
+### Phase 1 --- Foundation & Architecture *(in progress)*
 
-Immediate objective:
+The directory skeleton and all placeholder files are in place.
 
-Refactor the existing `App.jsx` and routing without breaking the current
-application.
+The next step is to wire everything together:
 
-Before changing anything: - Inspect the existing `App.jsx` - Inspect
-current routes - Identify state currently owned by `App` - Identify
-event-related logic - Identify components that can be reused - Identify
-duplicated or tightly coupled logic
-
-Then refactor incrementally.
+1.  Update `App.jsx` — add React Router, wrap the tree with
+    `EventProvider`, and connect the page components.
+2.  Implement real navigation in `Navbar.jsx`.
+3.  Seed `EventContext` with `fallbackEvents` and expose CRUD helpers.
+4.  Implement `Events.jsx` as the first real page using `EventCard`.
 
 ------------------------------------------------------------------------
 
@@ -325,16 +342,21 @@ after reviewing the current project and available backend/data source.
 
 ## Next Task
 
-### Refactor `App.jsx` and establish the foundation.
+### Wire `App.jsx` and start Phase 1 implementation.
 
-Before writing the refactor: 1. Inspect the current `App.jsx`. 2.
-Identify all current state. 3. Identify all current routes. 4. Identify
-event-related functions. 5. Identify which logic belongs in
-Context/Services/Pages. 6. Make the smallest safe refactor. 7. Run the
-application and verify that all current functionality still works.
+Steps:
 
-After that, update this state file with: - What changed - What was
-preserved - What was removed - What remains - The next exact task
+1.  Install `react-router-dom` if not already present.
+2.  Refactor `App.jsx`:
+    -   Wrap the app in `<EventProvider>`.
+    -   Set up `<BrowserRouter>` with routes for all five pages.
+    -   Keep `<Navbar />` and `<Footer />` in the shell.
+3.  Add navigation links to `Navbar.jsx`.
+4.  Implement `Events.jsx` (list view) using `EventCard` and
+    `fallbackEvents`.
+5.  Run the app and verify all routes render without errors.
+
+After that, update this state file with what changed and the next task.
 
 ------------------------------------------------------------------------
 
