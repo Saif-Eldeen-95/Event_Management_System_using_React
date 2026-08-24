@@ -1,0 +1,84 @@
+.event-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary);
+}
+
+.event-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.event-card__badge {
+    display: inline-block;
+    padding: var(--spacing-1) var(--spacing-3);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: #fff;
+}
+
+.event-card__badge--tech { background-color: #0ea5e9; }
+.event-card__badge--sports { background-color: #ef4444; }
+.event-card__badge--career { background-color: #22c55e; }
+.event-card__badge--art { background-color: #f59e0b; }
+.event-card__badge--workshop { background-color: var(--color-primary); }
+.event-card__badge--default { background-color: var(--color-text-muted); }
+
+.event-card__favorite {
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xl);
+    line-height: 1;
+    padding: var(--spacing-1);
+}
+
+.event-card__favorite--active {
+    color: var(--color-secondary);
+}
+
+.event-card__title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-top: var(--spacing-2);
+}
+
+.event-card__meta,
+.event-card__location {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+.event-card__description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-top: var(--spacing-2);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.event-card__actions {
+    display: flex;
+    gap: var(--spacing-2);
+    margin-top: var(--spacing-3);
+}
+
+.event-card__actions .btn {
+    flex: 1;
+}

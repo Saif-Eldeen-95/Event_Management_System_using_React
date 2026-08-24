@@ -1,12 +1,72 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Button from './Button';
 import './EventCard.css';
 
-function EventCard({ event }) {
+const CATEGORY_CLASS = {
+    Tech: 'event-card__badge--tech',
+    Sports: 'event-card__badge--sports',
+    Career: 'event-card__badge--career',
+    Art: 'event-card__badge--art',
+    Workshop: 'event-card__badge--workshop',
+};
+
+function EventCard({ event, isRegistered, onRegister, onUnregister }) {
+    const [isFavorite, setIsFavorite] = useState(false);
+    const navigate = useNavigate();
+
+    if (!event) return null;
+
+    const badgeClass = CATEGORY_CLASS[event.category] || 'event-card__badge--default';
+
+    function handleRegisterClick(e) {
+        e.stopPropagation();
+        if (isRegistered) {
+            onUnregister?.(event.id);
+        } else {
+            onRegister?.(event.id);
+        }
+    }
+
     return (
-        <div className="event-card">
-            <h3 className="event-card__title">{event?.title}</h3>
-            <p className="event-card__category">{event?.category}</p>
-            <p className="event-card__date">{event?.date} at {event?.time}</p>
-            <p className="event-card__location">{event?.location}</p>
+        <div className="event-card" onClick={() => navigate(`/events/${event.id}`)}>
+            <div className="event-card__header">
+                <span className={`event-card__badge ${badgeClass}`}>{event.category}</span>
+                <button
+                    type="button"
+                    className={`event-card__favorite${isFavorite ? ' event-card__favorite--active' : ''}`}
+                    aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setIsFavorite((prev) => !prev);
+                    }}
+                >
+                    ♥
+                </button>
+            </div>
+
+            <h3 className="event-card__title">{event.title}</h3>
+            <p className="event-card__meta">{event.date} &middot; {event.time}</p>
+            <p className="event-card__location">{event.location}</p>
+            <p className="event-card__description">{event.description}</p>
+
+            <div className="event-card__actions">
+                <Button
+                    variant="secondary"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/events/${event.id}`);
+                    }}
+                >
+                    Details
+                </Button>
+                <Button
+                    variant={isRegistered ? 'ghost' : 'primary'}
+                    onClick={handleRegisterClick}
+                >
+                    {isRegistered ? 'Unregister' : 'Register'}
+                </Button>
+            </div>
         </div>
     );
 }

@@ -1,8 +1,51 @@
+import { Link } from 'react-router-dom';
+import { useEvents } from '../context/EventContext';
+import EventCard from '../components/ui/EventCard';
+import Loader from '../components/ui/Loader';
+import EmptyState from '../components/ui/EmptyState';
+import './Home.css';
+
 function Home() {
+    const { events, loading, error, isRegistered, registerEvent, unregisterEvent } = useEvents();
+    const featuredEvents = events.slice(0, 3);
+
     return (
         <div className="home-page">
-            <h1>Welcome to EventHub</h1>
-            <p>Discover and manage events all in one place.</p>
+            <section className="hero">
+                <h1 className="hero__title">Welcome to EventHub</h1>
+                <p className="hero__subtitle">
+                    Discover, create, and register for events all in one place.
+                </p>
+                <Link to="/events" className="btn btn--primary hero__cta">
+                    Explore Events
+                </Link>
+            </section>
+
+            <section className="featured">
+                <h2 className="featured__title">Featured Events</h2>
+                <p className="featured__subtitle">Here are some events you can join</p>
+
+                {loading && <Loader />}
+                {error && <p className="home-page__error">{error}</p>}
+
+                {!loading && !error && featuredEvents.length === 0 && (
+                    <EmptyState message="No events available right now." />
+                )}
+
+                {!loading && !error && featuredEvents.length > 0 && (
+                    <div className="featured__grid">
+                        {featuredEvents.map((event) => (
+                            <EventCard
+                                key={event.id}
+                                event={event}
+                                isRegistered={isRegistered(event.id)}
+                                onRegister={registerEvent}
+                                onUnregister={unregisterEvent}
+                            />
+                        ))}
+                    </div>
+                )}
+            </section>
         </div>
     );
 }

@@ -1,0 +1,95 @@
+.event-details-page {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.event-details-page--not-found {
+    text-align: center;
+    padding: var(--spacing-12) 0;
+}
+
+.event-details__back {
+    display: inline-block;
+    margin-bottom: var(--spacing-4);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+}
+
+.event-details__card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.event-details__header {
+    padding: var(--spacing-6);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+}
+
+.event-details__badge {
+    display: inline-block;
+    padding: var(--spacing-1) var(--spacing-3);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: var(--spacing-2);
+}
+
+.event-details__badge--tech { background-color: #0ea5e9; }
+.event-details__badge--sports { background-color: #ef4444; }
+.event-details__badge--career { background-color: #22c55e; }
+.event-details__badge--art { background-color: #f59e0b; }
+.event-details__badge--workshop { background-color: var(--color-secondary); }
+.event-details__badge--default { background-color: rgba(255, 255, 255, 0.3); }
+
+.event-details__title {
+    color: #fff;
+    font-size: var(--font-size-2xl);
+    font-weight: 800;
+}
+
+.event-details__body {
+    padding: var(--spacing-6);
+}
+
+.event-details__info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-4);
+}
+
+.event-details__info-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+}
+
+.event-details__info-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    font-weight: 600;
+}
+
+.event-details__divider {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: var(--spacing-6) 0;
+}
+
+.event-details__about-title {
+    font-weight: 700;
+    margin-bottom: var(--spacing-2);
+}
+
+.event-details__description {
+    color: var(--color-text-muted);
+}
+
+.event-details__cta {
+    width: 100%;
+    margin-top: var(--spacing-6);
+    padding: var(--spacing-3);
+    font-size: var(--font-size-base);
+}
