@@ -44,8 +44,8 @@ function EventDetails() {
             unregisterEvent(event.id);
             setToast({ type: 'info', message: '✓ You have been unregistered from this event.' });
         } else {
-            registerEvent(event.id);
-            setToast({ type: 'success', message: '🎉 You are registered! See you there.' });
+            const success = registerEvent(event.id);
+            setToast(success ? { type: 'success', message: '🎉 You are registered! See you there.' } : { type: 'info', message: 'This event is currently full.' });
         }
     }
 
@@ -92,10 +92,11 @@ function EventDetails() {
 
                     <button
                         type="button"
-                        className={`btn ${registered ? 'btn--ghost' : 'btn--primary'} event-details__cta`}
+                        className={`btn ${registered ? 'btn--ghost' : event.seats <= 0 ? 'btn--secondary' : 'btn--primary'} event-details__cta`}
                         onClick={handleToggleRegistration}
+                        disabled={!registered && event.seats <= 0}
                     >
-                        {registered ? 'Unregister' : 'Register Now'}
+                        {registered ? 'Unregister' : event.seats <= 0 ? 'Event Full' : 'Register Now'}
                     </button>
                 </div>
             </div>

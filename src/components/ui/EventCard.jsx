@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from './Button';
 import './EventCard.css';
@@ -11,8 +10,7 @@ const CATEGORY_CLASS = {
     Workshop: 'event-card__badge--workshop',
 };
 
-function EventCard({ event, isRegistered, onRegister, onUnregister }) {
-    const [isFavorite, setIsFavorite] = useState(false);
+function EventCard({ event, isRegistered, onRegister, onUnregister, isFavorite = false, onToggleFavorite }) {
     const navigate = useNavigate();
 
     if (!event) return null;
@@ -38,7 +36,7 @@ function EventCard({ event, isRegistered, onRegister, onUnregister }) {
                     aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
                     onClick={(e) => {
                         e.stopPropagation();
-                        setIsFavorite((prev) => !prev);
+                        onToggleFavorite?.(event.id);
                     }}
                 >
                     ♥
@@ -61,10 +59,11 @@ function EventCard({ event, isRegistered, onRegister, onUnregister }) {
                     Details
                 </Button>
                 <Button
-                    variant={isRegistered ? 'ghost' : 'primary'}
+                    variant={isRegistered ? 'ghost' : event.seats <= 0 ? 'secondary' : 'primary'}
                     onClick={handleRegisterClick}
+                    disabled={!isRegistered && event.seats <= 0}
                 >
-                    {isRegistered ? 'Unregister' : 'Register'}
+                    {isRegistered ? 'Unregister' : event.seats <= 0 ? 'Full' : 'Register'}
                 </Button>
             </div>
         </div>

@@ -5,7 +5,7 @@ import EmptyState from '../components/ui/EmptyState';
 import './MyEvents.css';
 
 function MyEvents() {
-    const { events, loading, error, registeredEvents, isRegistered, registerEvent, unregisterEvent } = useEvents();
+    const { events, loading, error, registeredEvents, isRegistered, registerEvent, unregisterEvent, isFavorite, toggleFavorite } = useEvents();
 
     const myEvents = events.filter((event) => registeredEvents.includes(event.id));
 
@@ -38,6 +38,8 @@ function MyEvents() {
                                 isRegistered={isRegistered(event.id)}
                                 onRegister={registerEvent}
                                 onUnregister={unregisterEvent}
+                                isFavorite={isFavorite(event.id)}
+                                onToggleFavorite={toggleFavorite}
                             />
                         ))}
                     </div>
