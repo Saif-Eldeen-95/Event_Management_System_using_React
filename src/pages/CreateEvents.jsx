@@ -32,6 +32,10 @@ function CreateEvents() {
             ...prev,
             [name]: type === 'checkbox' ? checked : value,
         }));
+        // Clear the field error on change
+        if (errors[name]) {
+            setErrors((prev) => { const copy = { ...prev }; delete copy[name]; return copy; });
+        }
     }
 
     function validate() {
@@ -56,7 +60,7 @@ function CreateEvents() {
 
         setSubmitting(true);
         try {
-            await addEvent({
+            const newEvent = await addEvent({
                 title: form.title.trim(),
                 category: form.category,
                 location: form.location.trim(),
@@ -65,27 +69,35 @@ function CreateEvents() {
                 time: form.time,
                 description: form.description.trim(),
             });
-            navigate('/');
+            // Navigate to the newly created event's detail page
+            navigate(`/events/${newEvent.id}`);
         } finally {
             setSubmitting(false);
         }
+    }
+
+    function fieldClass(name) {
+        return errors[name] ? 'input--error' : '';
     }
 
     return (
         <div className="create-events-page">
             <div className="create-events__card">
                 <h1 className="create-events__title">Create New Event</h1>
+                <p className="create-events__subtitle">Fill in the details to publish your event.</p>
 
                 <form noValidate onSubmit={handleSubmit} className="create-events__form">
+
                     <div className="form-group">
                         <label htmlFor="title">Event Name</label>
                         <input
                             id="title"
                             name="title"
                             type="text"
-                            placeholder="Event Name"
+                            placeholder="e.g. Web Design Workshop"
                             value={form.title}
                             onChange={handleChange}
+                            className={fieldClass('title')}
                         />
                         {errors.title && <span className="form-error">{errors.title}</span>}
                     </div>
@@ -97,6 +109,7 @@ function CreateEvents() {
                             name="category"
                             value={form.category}
                             onChange={handleChange}
+                            className={fieldClass('category')}
                         >
                             <option value="" disabled>Select a category</option>
                             {CATEGORIES.map((cat) => (
@@ -112,50 +125,59 @@ function CreateEvents() {
                             id="location"
                             name="location"
                             type="text"
-                            placeholder="Location"
+                            placeholder="e.g. Room 204 or Online"
                             value={form.location}
                             onChange={handleChange}
+                            className={fieldClass('location')}
                         />
                         {errors.location && <span className="form-error">{errors.location}</span>}
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="seats">Seats</label>
+                        <label htmlFor="seats">Available Seats</label>
                         <input
                             id="seats"
                             name="seats"
                             type="number"
-                            placeholder="Seats"
+                            placeholder="e.g. 30"
                             min="1"
                             value={form.seats}
                             onChange={handleChange}
+                            className={fieldClass('seats')}
                         />
                         {errors.seats && <span className="form-error">{errors.seats}</span>}
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="date">Date</label>
-                        <input
-                            id="date"
-                            name="date"
-                            type="date"
-                            min={today}
-                            value={form.date}
-                            onChange={handleChange}
-                        />
-                        {errors.date && <span className="form-error">{errors.date}</span>}
-                    </div>
+                    <hr className="create-events__divider" />
 
-                    <div className="form-group">
-                        <label htmlFor="time">Time</label>
-                        <input
-                            id="time"
-                            name="time"
-                            type="time"
-                            value={form.time}
-                            onChange={handleChange}
-                        />
-                        {errors.time && <span className="form-error">{errors.time}</span>}
+                    {/* Date and Time side-by-side */}
+                    <div className="create-events__row">
+                        <div className="form-group">
+                            <label htmlFor="date">Date</label>
+                            <input
+                                id="date"
+                                name="date"
+                                type="date"
+                                min={today}
+                                value={form.date}
+                                onChange={handleChange}
+                                className={fieldClass('date')}
+                            />
+                            {errors.date && <span className="form-error">{errors.date}</span>}
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="time">Time</label>
+                            <input
+                                id="time"
+                                name="time"
+                                type="time"
+                                value={form.time}
+                                onChange={handleChange}
+                                className={fieldClass('time')}
+                            />
+                            {errors.time && <span className="form-error">{errors.time}</span>}
+                        </div>
                     </div>
 
                     <div className="form-group">
@@ -163,10 +185,11 @@ function CreateEvents() {
                         <textarea
                             id="description"
                             name="description"
-                            rows={3}
-                            placeholder="Description"
+                            rows={4}
+                            placeholder="Describe what attendees can expect..."
                             value={form.description}
                             onChange={handleChange}
+                            className={fieldClass('description')}
                         />
                         {errors.description && <span className="form-error">{errors.description}</span>}
                     </div>
@@ -179,12 +202,16 @@ function CreateEvents() {
                                 checked={form.agreeToTerms}
                                 onChange={handleChange}
                             />
-                            Agree to terms and conditions
+                            I agree to the terms and conditions
                         </label>
                         {errors.agreeToTerms && <span className="form-error">{errors.agreeToTerms}</span>}
                     </div>
 
-                    <button type="submit" className="btn btn--primary create-events__submit" disabled={submitting}>
+                    <button
+                        type="submit"
+                        className="btn btn--primary create-events__submit"
+                        disabled={submitting}
+                    >
                         {submitting ? 'Creating...' : 'Create Event'}
                     </button>
                 </form>

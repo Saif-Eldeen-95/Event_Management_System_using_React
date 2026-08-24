@@ -1,15 +1,34 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navbar.css';
 
 function Navbar() {
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    function closeMenu() {
+        setMenuOpen(false);
+    }
+
     return (
         <nav className="navbar">
             <div className="navbar__inner">
-                <NavLink to="/" className="navbar__brand">
+                <NavLink to="/" className="navbar__brand" onClick={closeMenu}>
                     EventHub
                 </NavLink>
 
-                <ul className="navbar__links">
+                <button
+                    type="button"
+                    className={`navbar__hamburger${menuOpen ? ' navbar__hamburger--open' : ''}`}
+                    aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                    aria-expanded={menuOpen}
+                    onClick={() => setMenuOpen((prev) => !prev)}
+                >
+                    <span />
+                    <span />
+                    <span />
+                </button>
+
+                <ul className={`navbar__links${menuOpen ? ' navbar__links--open' : ''}`}>
                     <li>
                         <NavLink
                             to="/"
@@ -17,6 +36,7 @@ function Navbar() {
                             className={({ isActive }) =>
                                 `navbar__link${isActive ? ' navbar__link--active' : ''}`
                             }
+                            onClick={closeMenu}
                         >
                             Home
                         </NavLink>
@@ -27,6 +47,7 @@ function Navbar() {
                             className={({ isActive }) =>
                                 `navbar__link${isActive ? ' navbar__link--active' : ''}`
                             }
+                            onClick={closeMenu}
                         >
                             Events
                         </NavLink>
@@ -37,6 +58,7 @@ function Navbar() {
                             className={({ isActive }) =>
                                 `navbar__link${isActive ? ' navbar__link--active' : ''}`
                             }
+                            onClick={closeMenu}
                         >
                             Create Event
                         </NavLink>
@@ -47,6 +69,7 @@ function Navbar() {
                             className={({ isActive }) =>
                                 `navbar__link${isActive ? ' navbar__link--active' : ''}`
                             }
+                            onClick={closeMenu}
                         >
                             My Events
                         </NavLink>

@@ -18,21 +18,30 @@ function MyEvents() {
             {error && <p className="my-events-page__error">{error}</p>}
 
             {!loading && !error && myEvents.length === 0 && (
-                <EmptyState message="You haven't registered for any events yet." />
+                <EmptyState
+                    message="You haven't registered for any events yet."
+                    actionLabel="Browse Events"
+                    actionTo="/events"
+                />
             )}
 
             {!loading && !error && myEvents.length > 0 && (
-                <div className="my-events-page__grid">
-                    {myEvents.map((event) => (
-                        <EventCard
-                            key={event.id}
-                            event={event}
-                            isRegistered={isRegistered(event.id)}
-                            onRegister={registerEvent}
-                            onUnregister={unregisterEvent}
-                        />
-                    ))}
-                </div>
+                <>
+                    <p className="my-events-page__count">
+                        You are registered for {myEvents.length} event{myEvents.length !== 1 ? 's' : ''}.
+                    </p>
+                    <div className="my-events-page__grid">
+                        {myEvents.map((event) => (
+                            <EventCard
+                                key={event.id}
+                                event={event}
+                                isRegistered={isRegistered(event.id)}
+                                onRegister={registerEvent}
+                                onUnregister={unregisterEvent}
+                            />
+                        ))}
+                    </div>
+                </>
             )}
         </div>
     );

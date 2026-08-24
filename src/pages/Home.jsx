@@ -16,20 +16,27 @@ function Home() {
                 <p className="hero__subtitle">
                     Discover, create, and register for events all in one place.
                 </p>
-                <Link to="/events" className="btn btn--primary hero__cta">
+                <Link to="/events" className="hero__cta">
                     Explore Events
                 </Link>
             </section>
 
             <section className="featured">
-                <h2 className="featured__title">Featured Events</h2>
-                <p className="featured__subtitle">Here are some events you can join</p>
+                <div className="featured__header">
+                    <h2 className="featured__title">Featured Events</h2>
+                    <Link to="/events" className="featured__view-all">View all →</Link>
+                </div>
+                <p className="featured__subtitle">Upcoming events you can join</p>
 
                 {loading && <Loader />}
                 {error && <p className="home-page__error">{error}</p>}
 
                 {!loading && !error && featuredEvents.length === 0 && (
-                    <EmptyState message="No events available right now." />
+                    <EmptyState
+                        message="No events available right now."
+                        actionLabel="Create one"
+                        actionTo="/create-event"
+                    />
                 )}
 
                 {!loading && !error && featuredEvents.length > 0 && (

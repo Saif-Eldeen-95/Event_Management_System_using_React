@@ -1,5 +1,4 @@
 .footer {
-    margin-top: var(--spacing-12);
     background-color: var(--color-surface);
     border-top: 1px solid var(--color-border);
 }
@@ -16,7 +15,7 @@
 
 .footer__logo {
     font-size: var(--font-size-lg);
-    font-weight: 700;
+    font-weight: 800;
     color: var(--color-text);
 }
 
@@ -25,17 +24,20 @@
     max-width: 320px;
     color: var(--color-text-muted);
     font-size: var(--font-size-sm);
+    line-height: 1.6;
 }
 
 .footer__links {
     display: flex;
     gap: var(--spacing-6);
     flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 .footer__links a {
     color: var(--color-text-muted);
     font-size: var(--font-size-sm);
+    transition: color 0.15s ease;
 }
 
 .footer__links a:hover {
@@ -49,4 +51,9 @@
     text-align: center;
     color: var(--color-text-muted);
     font-size: var(--font-size-sm);
+}
+
+.footer__bottom p {
+    max-width: 1200px;
+    margin: 0 auto;
 }
