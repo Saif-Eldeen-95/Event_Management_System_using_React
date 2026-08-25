@@ -13,7 +13,7 @@ const HEADER_CLASS = {
 
 function EventDetails() {
     const { id } = useParams();
-    const { loading, isRegistered, registerEvent, unregisterEvent, getEventFromState } = useEvents();
+    const { loading, isRegistered, registerEvent, unregisterEvent, isFavorite, toggleFavorite, getEventFromState } = useEvents();
     const [toast, setToast] = useState(null); // { type: 'success'|'info', message: string }
 
     // Auto-dismiss the toast after 3 seconds
@@ -37,6 +37,7 @@ function EventDetails() {
     }
 
     const registered = isRegistered(event.id);
+    const favorite = isFavorite(event.id);
     const headerClass = HEADER_CLASS[event.category] || '';
 
     function handleToggleRegistration() {
@@ -44,8 +45,8 @@ function EventDetails() {
             unregisterEvent(event.id);
             setToast({ type: 'info', message: '✓ You have been unregistered from this event.' });
         } else {
-            const success = registerEvent(event.id);
-            setToast(success ? { type: 'success', message: '🎉 You are registered! See you there.' } : { type: 'info', message: 'This event is currently full.' });
+            registerEvent(event.id);
+            setToast({ type: 'success', message: '🎉 You are registered! See you there.' });
         }
     }
 
@@ -57,6 +58,14 @@ function EventDetails() {
                 <div className={`event-details__header ${headerClass}`}>
                     <span className="event-details__badge">{event.category}</span>
                     <h1 className="event-details__title">{event.title}</h1>
+                    <button
+                        type="button"
+                        className={`event-details__favorite${favorite ? ' event-details__favorite--active' : ''}`}
+                        aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
+                        onClick={() => toggleFavorite(event.id)}
+                    >
+                        ♥ {favorite ? 'Saved' : 'Add to favorites'}
+                    </button>
                 </div>
 
                 <div className="event-details__body">
@@ -92,11 +101,10 @@ function EventDetails() {
 
                     <button
                         type="button"
-                        className={`btn ${registered ? 'btn--ghost' : event.seats <= 0 ? 'btn--secondary' : 'btn--primary'} event-details__cta`}
+                        className={`btn ${registered ? 'btn--ghost' : 'btn--primary'} event-details__cta`}
                         onClick={handleToggleRegistration}
-                        disabled={!registered && event.seats <= 0}
                     >
-                        {registered ? 'Unregister' : event.seats <= 0 ? 'Event Full' : 'Register Now'}
+                        {registered ? 'Unregister' : 'Register Now'}
                     </button>
                 </div>
             </div>

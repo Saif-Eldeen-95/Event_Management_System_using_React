@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import Button from './Button';
+import { useEvents } from '../../context/EventContext';
 import './EventCard.css';
 
 const CATEGORY_CLASS = {
@@ -10,8 +11,10 @@ const CATEGORY_CLASS = {
     Workshop: 'event-card__badge--workshop',
 };
 
-function EventCard({ event, isRegistered, onRegister, onUnregister, isFavorite = false, onToggleFavorite }) {
+function EventCard({ event, isRegistered, onRegister, onUnregister }) {
     const navigate = useNavigate();
+    const { isFavorite, toggleFavorite } = useEvents();
+    const favorite = isFavorite(event?.id);
 
     if (!event) return null;
 
@@ -32,11 +35,11 @@ function EventCard({ event, isRegistered, onRegister, onUnregister, isFavorite =
                 <span className={`event-card__badge ${badgeClass}`}>{event.category}</span>
                 <button
                     type="button"
-                    className={`event-card__favorite${isFavorite ? ' event-card__favorite--active' : ''}`}
-                    aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                    className={`event-card__favorite${favorite ? ' event-card__favorite--active' : ''}`}
+                    aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
                     onClick={(e) => {
                         e.stopPropagation();
-                        onToggleFavorite?.(event.id);
+                        toggleFavorite(event.id);
                     }}
                 >
                     ♥
@@ -59,11 +62,10 @@ function EventCard({ event, isRegistered, onRegister, onUnregister, isFavorite =
                     Details
                 </Button>
                 <Button
-                    variant={isRegistered ? 'ghost' : event.seats <= 0 ? 'secondary' : 'primary'}
+                    variant={isRegistered ? 'ghost' : 'primary'}
                     onClick={handleRegisterClick}
-                    disabled={!isRegistered && event.seats <= 0}
                 >
-                    {isRegistered ? 'Unregister' : event.seats <= 0 ? 'Full' : 'Register'}
+                    {isRegistered ? 'Unregister' : 'Register'}
                 </Button>
             </div>
         </div>

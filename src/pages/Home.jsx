@@ -6,7 +6,7 @@ import EmptyState from '../components/ui/EmptyState';
 import './Home.css';
 
 function Home() {
-    const { events, loading, error, isRegistered, registerEvent, unregisterEvent, isFavorite, toggleFavorite } = useEvents();
+    const { events, loading, error, isRegistered, registerEvent, unregisterEvent } = useEvents();
     const featuredEvents = events.slice(0, 3);
 
     return (
@@ -48,8 +48,6 @@ function Home() {
                                 isRegistered={isRegistered(event.id)}
                                 onRegister={registerEvent}
                                 onUnregister={unregisterEvent}
-                                isFavorite={isFavorite(event.id)}
-                                onToggleFavorite={toggleFavorite}
                             />
                         ))}
                     </div>

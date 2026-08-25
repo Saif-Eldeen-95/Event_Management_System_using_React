@@ -8,7 +8,7 @@ import './Events.css';
 const CATEGORIES = ['All', 'Tech', 'Sports', 'Career', 'Art', 'Workshop'];
 
 function Events() {
-    const { events, loading, error, isRegistered, registerEvent, unregisterEvent, isFavorite, toggleFavorite } = useEvents();
+    const { events, loading, error, isRegistered, registerEvent, unregisterEvent } = useEvents();
     const [query, setQuery] = useState('');
     const [category, setCategory] = useState('All');
 
@@ -71,8 +71,6 @@ function Events() {
                                         isRegistered={isRegistered(event.id)}
                                         onRegister={registerEvent}
                                         onUnregister={unregisterEvent}
-                                isFavorite={isFavorite(event.id)}
-                                onToggleFavorite={toggleFavorite}
                                     />
                                 ))}
                             </div>

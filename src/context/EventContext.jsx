@@ -4,24 +4,32 @@ import { getEvents, createEvent as createEventService } from '../services/eventS
 const EventContext = createContext(null);
 
 const STORAGE_KEYS = {
-    events: 'eventhub_events',
-    registered: 'eventhub_registered',
-    favorites: 'eventhub_favorites',
+    createdEvents: 'eventhub-created-events',
+    registeredEvents: 'eventhub-registered-events',
+    favoriteEvents: 'eventhub-favorite-events',
 };
 
-function readStorage(key, fallback) {
+function readStoredArray(key) {
     try {
-        const value = localStorage.getItem(key);
-        return value ? JSON.parse(value) : fallback;
+        const stored = localStorage.getItem(key);
+        return stored ? JSON.parse(stored) : [];
     } catch {
-        return fallback;
+        return [];
+    }
+}
+
+function saveArray(key, value) {
+    try {
+        localStorage.setItem(key, JSON.stringify(value));
+    } catch {
+        // localStorage is optional; the app still works for the current session.
     }
 }
 
 export function EventProvider({ children }) {
     const [events, setEvents] = useState([]);
-    const [registeredEvents, setRegisteredEvents] = useState(() => readStorage(STORAGE_KEYS.registered, []));
-    const [favoriteEvents, setFavoriteEvents] = useState(() => readStorage(STORAGE_KEYS.favorites, []));
+    const [registeredEvents, setRegisteredEvents] = useState(() => readStoredArray(STORAGE_KEYS.registeredEvents));
+    const [favoriteEvents, setFavoriteEvents] = useState(() => readStoredArray(STORAGE_KEYS.favoriteEvents));
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -30,27 +38,20 @@ export function EventProvider({ children }) {
     }, []);
 
     useEffect(() => {
-        localStorage.setItem(STORAGE_KEYS.registered, JSON.stringify(registeredEvents));
+        saveArray(STORAGE_KEYS.registeredEvents, registeredEvents);
     }, [registeredEvents]);
 
     useEffect(() => {
-        localStorage.setItem(STORAGE_KEYS.favorites, JSON.stringify(favoriteEvents));
+        saveArray(STORAGE_KEYS.favoriteEvents, favoriteEvents);
     }, [favoriteEvents]);
-
-    useEffect(() => {
-        if (events.length > 0) {
-            localStorage.setItem(STORAGE_KEYS.events, JSON.stringify(events));
-        }
-    }, [events]);
 
     async function loadEvents() {
         try {
             setLoading(true);
             setError(null);
-
-            const storedEvents = readStorage(STORAGE_KEYS.events, null);
-            const data = storedEvents ?? await getEvents();
-            setEvents(data);
+            const data = await getEvents();
+            const createdEvents = readStoredArray(STORAGE_KEYS.createdEvents);
+            setEvents([...data, ...createdEvents]);
         } catch {
             setError('Failed to load events. Please try again later.');
         } finally {
@@ -61,84 +62,61 @@ export function EventProvider({ children }) {
     async function addEvent(eventData) {
         const newEvent = await createEventService(eventData);
         setEvents((prev) => [...prev, newEvent]);
+
+        const createdEvents = readStoredArray(STORAGE_KEYS.createdEvents);
+        saveArray(STORAGE_KEYS.createdEvents, [...createdEvents, newEvent]);
+
         return newEvent;
     }
 
     function registerEvent(eventId) {
-        const id = Number(eventId);
-        const event = events.find((item) => Number(item.id) === id);
-
-        if (!event || Number(event.seats) <= 0 || registeredEvents.includes(id)) {
-            return false;
-        }
-
-        setEvents((prev) =>
-            prev.map((item) =>
-                Number(item.id) === id
-                    ? { ...item, seats: Math.max(0, Number(item.seats) - 1) }
-                    : item
-            )
+        setRegisteredEvents((prev) =>
+            prev.includes(eventId) ? prev : [...prev, eventId]
         );
-        setRegisteredEvents((prev) => [...prev, id]);
-        return true;
     }
 
     function unregisterEvent(eventId) {
-        const id = Number(eventId);
-        const event = events.find((item) => Number(item.id) === id);
-
-        if (!event || !registeredEvents.includes(id)) {
-            return false;
-        }
-
-        setEvents((prev) =>
-            prev.map((item) =>
-                Number(item.id) === id
-                    ? { ...item, seats: Number(item.seats) + 1 }
-                    : item
-            )
-        );
-        setRegisteredEvents((prev) => prev.filter((registeredId) => registeredId !== id));
-        return true;
+        setRegisteredEvents((prev) => prev.filter((id) => id !== eventId));
     }
 
     function isRegistered(eventId) {
-        return registeredEvents.includes(Number(eventId));
-    }
-
-    function isFavorite(eventId) {
-        return favoriteEvents.includes(Number(eventId));
+        return registeredEvents.includes(eventId);
     }
 
     function toggleFavorite(eventId) {
-        const id = Number(eventId);
         setFavoriteEvents((prev) =>
-            prev.includes(id) ? prev.filter((favoriteId) => favoriteId !== id) : [...prev, id]
+            prev.includes(eventId)
+                ? prev.filter((id) => id !== eventId)
+                : [...prev, eventId]
         );
+    }
+
+    function isFavorite(eventId) {
+        return favoriteEvents.includes(eventId);
     }
 
     function getEventFromState(id) {
         return events.find((event) => String(event.id) === String(id)) ?? null;
     }
 
+    const value = {
+        events,
+        registeredEvents,
+        favoriteEvents,
+        loading,
+        error,
+        addEvent,
+        registerEvent,
+        unregisterEvent,
+        isRegistered,
+        toggleFavorite,
+        isFavorite,
+        getEventFromState,
+        refreshEvents: loadEvents,
+    };
+
     return (
-        <EventContext.Provider
-            value={{
-                events,
-                registeredEvents,
-                favoriteEvents,
-                loading,
-                error,
-                addEvent,
-                registerEvent,
-                unregisterEvent,
-                isRegistered,
-                isFavorite,
-                toggleFavorite,
-                getEventFromState,
-                refreshEvents: loadEvents,
-            }}
-        >
+        <EventContext.Provider value={value}>
             {children}
         </EventContext.Provider>
     );
