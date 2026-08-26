@@ -131,5 +131,3 @@
 .event-card__actions .btn {
     flex: 1;
 }
-.event-card__seats { color: var(--color-text-muted); font-size: var(--font-size-sm); margin-top: var(--spacing-2); }
-.event-card__favorite--active { color: var(--color-secondary); }

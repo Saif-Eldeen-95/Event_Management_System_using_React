@@ -19,7 +19,7 @@ function delay(value) {
 
 /** Fetch all events */
 export async function getEvents() {
-    return delay(fallbackEvents.map((event) => ({ ...event })));
+    return delay(fallbackEvents);
 }
 
 /** Fetch a single event by id */
