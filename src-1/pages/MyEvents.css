@@ -29,10 +29,3 @@
     color: var(--color-error);
     padding: var(--spacing-4) 0;
 }
-.my-events-page {
-    color: var(--color-text);
-}
-
-.my-events-page__title {
-    color: var(--color-text);
-}

@@ -1,7 +1,7 @@
 .hero {
     text-align: center;
     padding: var(--spacing-12) var(--spacing-6);
-    background: linear-gradient(135deg, var(--color-dark-turquoise) 0%, var(--color-turquoise) 55%, var(--color-turquoise) 100%);
+    background: linear-gradient(135deg, var(--color-deep-green) 0%, var(--color-deep-blue) 55%, var(--color-turquoise) 100%);
     border-radius: var(--radius-lg);
     margin-bottom: var(--spacing-12);
     position: relative;
@@ -37,7 +37,7 @@
     display: inline-block;
     margin-top: var(--spacing-6);
     background-color: #fff;
-    color: var(--color-dark-turquoise);
+    color: var(--color-deep-green);
     font-weight: 700;
     padding: var(--spacing-3) var(--spacing-8);
     border-radius: var(--radius-full);
@@ -47,8 +47,6 @@
 .hero__cta:hover {
     text-decoration: none;
     opacity: 0.92;
-    background-color: var(--color-mint);
-    color: #fff;
     transform: translateY(-1px);
 }
 

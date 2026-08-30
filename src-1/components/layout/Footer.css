@@ -1,5 +1,5 @@
 .footer {
-    background-color: var(--color-dark-turquoise);
+    background-color: var(--color-deep-green);
     border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
@@ -41,7 +41,7 @@
 }
 
 .footer__links a:hover {
-    color: var(--color-mint);
+    color: var(--color-light-green);
     text-decoration: none;
 }
 

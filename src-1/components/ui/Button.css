@@ -23,13 +23,12 @@
 
 .btn--primary:hover:not(:disabled) {
     background-color: var(--color-primary-dark);
-    color: #fff;
 }
 
 .btn--secondary {
-    background-color: var(--color-bg);
+    background-color: transparent;
     border-color: var(--color-border);
-    color: var(--color-primary);
+    color: var(--color-text);
 }
 
 .btn--secondary:hover:not(:disabled) {
@@ -53,23 +52,4 @@
 
 .btn--danger:hover:not(:disabled) {
     opacity: 0.9;
-}
-
-
-/* Brand-focused interaction effects */
-.btn {
-    box-shadow: var(--shadow-sm);
-}
-
-.btn--primary {
-    box-shadow: var(--shadow-sm);
-}
-
-.btn--primary:hover:not(:disabled),
-.btn--secondary:hover:not(:disabled) {
-    box-shadow: var(--shadow-brand);
-}
-
-:root[data-theme='dark'] .btn--primary {
-    color: var(--color-dark-turquoise);
 }
