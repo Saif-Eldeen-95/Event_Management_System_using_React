@@ -3,7 +3,7 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    background: var(--color-mint);
+    background: rgba(248, 250, 249, 0.94);
     border-bottom: 1px solid var(--color-border);
     backdrop-filter: blur(12px);
 }
@@ -22,7 +22,7 @@
 .navbar__brand {
     font-size: var(--font-size-xl);
     font-weight: 800;
-    color: var(--color-black);
+    color: var(--color-deep-green);
     letter-spacing: -0.02em;
     transition: color 0.15s ease;
 }
@@ -40,7 +40,7 @@
 }
 
 .navbar__link {
-    color: var(--color-black);
+    color: var(--color-green);
     font-size: var(--font-size-sm);
     font-weight: 600;
     padding: var(--spacing-2) 0;
@@ -49,7 +49,7 @@
 }
 
 .navbar__link:hover {
-    color: var(--color-turquoise);
+    color: var(--color-deep-green);
     text-decoration: none;
 }
 
@@ -74,7 +74,7 @@
     display: block;
     width: 100%;
     height: 2px;
-    background: var(--color-dark-turquoise);
+    background: var(--color-deep-green);
     border-radius: 2px;
     transition: transform 0.25s ease, opacity 0.25s ease;
     transform-origin: center;
@@ -132,7 +132,7 @@
     border: 1px solid var(--color-border);
     border-radius: var(--radius-full);
     background: var(--color-surface-alt);
-    color: var(--color-dark-turquoise);
+    color: var(--color-deep-green);
     font-size: 1.1rem;
     transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
@@ -144,7 +144,7 @@
 }
 
 :root[data-theme='dark'] .theme-toggle {
-    color: var(--color-mint);
+    color: var(--color-light-green);
 }
 
 .theme-toggle__icon {
@@ -163,11 +163,11 @@
 }
 
 :root[data-theme='dark'] .navbar {
-    background: rgba(15, 61, 62, 0.94);
+    background: rgba(15, 61, 62, 0.92);
 }
 
 :root[data-theme='dark'] .navbar__brand {
-    color: var(--color-mint);
+    color: var(--color-light-green);
 }
 
 :root[data-theme='dark'] .navbar__link {
@@ -176,9 +176,9 @@
 
 :root[data-theme='dark'] .navbar__link:hover,
 :root[data-theme='dark'] .navbar__link--active {
-    color: var(--color-mint);
+    color: var(--color-light-emerald);
 }
 
 :root[data-theme='dark'] .navbar__hamburger span {
-    background: var(--color-mint);
+    background: var(--color-light-green);
 }
